@@ -22,3 +22,29 @@ This PR delivers a comprehensive, production-grade problem discovery document th
 ### Verification Statement
 - [x] All 6 documented problems feature a thorough, 7-step minimum broken flow.
 - [x] The 3 self-discovered issues are completely distinct from the given problems and were verified directly on the live platform.
+
+## Part B Update — Product Engineering & Architecture Design Sprint
+
+### Overview
+This update transitions the IRCTC live audit discovery work from Part A into 6 production-ready feature specifications. Every design proposal explicitly targets a systemic backend infrastructure or client state failure documented in `PROBLEMS.md`.
+
+### Core Sprint Prioritization Matrix
+| High Impact / Low Effort (Quick Wins) | High Impact / High Effort (Strategic Imperatives) |
+| :--- | :--- |
+| • **Feature 2:** Persistent Search Filter Query Caching<br>• **Feature 6:** PNR Input Auto-Sanitization | • **Feature 1:** Token-Bucket Virtual Queue State Machine<br>• **Feature 3:** Optimistic Passenger Preference Payload Lock |
+
+### Highlight Spec Preview: Feature 6 (PNR Auto-Sanitization)
+- **The Solution:** Client-side regular expression processing intercepts input text strings, automatically stripping trailing space characters. 
+- **Error Handling:** Raw database exceptions (e.g., `ERR_5003`) pass through a translation dictionary middleware module, transforming confusing system errors into friendly, helpful instructions: *"We couldn't find that PNR number. Please verify your 10-digit ticket code and try again."*
+
+### Selected Wireframe View
+![Filter Persistence Workspace](../assets/wireframes/search-filter-persistence.png)
+*Caption: Proposed persistent filter panel featuring synchronized browser URL route query arrays.*
+
+### Post-Peer-Review System Iterations
+Following a collaborative peer architectural review, two key improvements were integrated into `SPECS.md`:
+1. **Feature Spec 1 (Queue):** Added an explicit browser storage fallback tracking mechanism. If a user's network connection drops mid-queue, the system retrieves their active token to resume their place without resetting queue positioning.
+2. **Feature Spec 4 (Captcha):** Refined token lifetime constraints to align precisely with server session timeouts, and verified that automated image refreshes run on isolated background web workers without dragging main UI thread performance.
+
+### Deliverables Submission Checklist
+- Live Repository Branch Link: `https://github.com/YOUR_USERNAME/irctc-sprint/tree/irctc-sprint`
